@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css');
+
+:root {
+  --pri: #81D4FA;
+  --sec: #B3E5FC;
+  --bg: #E1F5FE;
+  --text: #455A64;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.tabs-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 50px;
+  border-radius: 10px;
+  background-color: var(--pri);
+  color: var(--text);
+  min-width: 350px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+}
+
+.tabs-container p {
+  font-size: 1.3rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tabs-container p:hover {
+  font-weight: bold;
+}
+
+.tabs-container .active p {
+  font-weight: bold;
+  text-decoration: underline;
+  text-underline-offset: 7px;
+  text-decoration-thickness: 1.5px;
+}
+
+.note-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 15px;
+  margin: 50px;
+}
+
+.note-wrapper .empty-message {
+  font-size: 1.2rem;
+  color: #555;
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+}
+
+.note {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--pri);
+  color: var(--text);
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  height: 250px;
+  overflow: auto; 
+  cursor: pointer;
+}
+
+.note:hover {
+  background-color: #55bff1;
+  color: #31434c
+}
+
+.note::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.note::-webkit-scrollbar-track {
+  background: #cce7ff;
+  border-radius: 10px;
+}
+
+.note::-webkit-scrollbar-thumb {
+  background: #4da6ff;
+  border-radius: 10px;
+}
+
+.note::-webkit-scrollbar-thumb:hover {
+  background: #0073e6;
+}
+
+.note .details h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.note .details p {
+  font-size: 0.9rem;
+  text-align: justify;
+  flex-grow: 1;
+}
+
+.fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  background-color: var(--pri);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  transition: 0.3s, transform 0.2s;
+}
+
+.fab:hover {
+  background-color: #55bff1;
+  transform: scale(1.1);
+}
+
+.popup-wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100%; 
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+.popup-wrapper .popup {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 400px;
+}
+
+.popup .content {
+  background-color: var(--sec);
+  padding: 15px 20px;
+  color: var(--text);
+  border-radius: 5px;
+}
+
+.content .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.content .header h2 {
+  font-weight: 600;
+}
+
+.content .header i {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.content .row {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+}
+
+.content button {
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  background-color: var(--pri);
+  color: var(--text);
+}
+
+.content button:hover {
+  background-color: #55bff1;
+  color: #31434c;
+}
+
+.row :where(input, textarea) {
+  padding: 8px 10px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: inherit;
+}
+
+.row.title .invalid,
+.row.body .invalid {
+  border: 2px solid red;
+}
+
+.row textarea {
+  height: 100px;
+  resize: none;
+}
+
+.row :where(input, textarea):hover,
+.row :where(input, textarea):focus {
+  border: 1px solid #31434c;
+}
+
+.content .isArchive {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .8rem;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: flex;
+  gap: 8px;
+}
