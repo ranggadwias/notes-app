@@ -1,4 +1,4 @@
-class AddButton extends HTMLElement{
+class AddButton extends HTMLElement {
   constructor() {
     super();
   }

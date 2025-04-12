@@ -1,4 +1,4 @@
-class NoteItem extends HTMLElement{
+class NoteItem extends HTMLElement {
   constructor() {
     super();
   }
@@ -25,11 +25,10 @@ class NoteItem extends HTMLElement{
       form.style.display = 'block';
     }
 
-    form.setEditMode({
+    form.noteDetail({
       id: this.getAttribute('note-id'),
       title: this.getAttribute('note-title'),
       body: this.getAttribute('note-body'),
-      archived: this.getAttribute('note-archived') === 'true' ? true : false,
     });
   }
 
@@ -46,7 +45,9 @@ class NoteItem extends HTMLElement{
       </div>
     `;
 
-    this.querySelector('.note').addEventListener('click', () => this.showNoteForm());
+    this.querySelector('.note').addEventListener('click', () =>
+      this.showNoteForm(),
+    );
   }
 }
 

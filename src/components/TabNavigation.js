@@ -40,10 +40,12 @@ class TabNavigation extends HTMLElement {
 
     this.selectedTab = tabName;
 
-    this.dispatchEvent(new CustomEvent('tab-changed', {
-      detail: { selectedTab: tabName },
-      bubbles: true
-    }));
+    this.dispatchEvent(
+      new CustomEvent('tab-changed', {
+        detail: { selectedTab: tabName },
+        bubbles: true,
+      }),
+    );
   }
 }
 

@@ -1,37 +1,32 @@
-import { notesData } from '../data/notes.js';
+import { getNotes, createNote, deleteNote } from '../api/notesApi.js';
+import { gsap } from 'gsap';
 
-class NoteList extends HTMLElement{
+class NoteList extends HTMLElement {
   constructor() {
     super();
-
-    const savedNotes = localStorage.getItem('notes');
-    this.notes = savedNotes ? JSON.parse(savedNotes) : [];
-    if (savedNotes === null) {
-      localStorage.setItem('notes', JSON.stringify(notesData));
-      this.notes = [...notesData];
-    }
-
+    this.notes = [];
     this._activeTab = 'notes';
   }
 
-  connectedCallback() {
+  async connectedCallback() {
+    this.notes = await getNotes();
     this.render();
 
     document.addEventListener('tab-changed', (e) => {
       this.activeTab = e.detail.selectedTab === 'notes' ? 'notes' : 'archive';
     });
 
-    document.addEventListener('note-add', (e) => {
-      this.addNote(e.detail);
+    document.addEventListener('note-add', async (e) => {
+      await createNote(e.detail);
+      this.notes = await getNotes();
+      this.render();
     });
 
-    document.addEventListener('note-update', (e) => {
-      this.updateNote(e.detail);
+    document.addEventListener('note-delete', async (e) => {
+      await deleteNote(e.detail.noteId);
+      this.notes = await getNotes();
+      this.render();
     });
-
-    document.addEventListener('note-delete', (e) => {
-      this.deleteNote(e.detail.noteId);
-    })
   }
 
   set activeTab(tabName) {
@@ -43,50 +38,43 @@ class NoteList extends HTMLElement{
     return this._activeTab;
   }
 
-  addNote(noteData) {
-    const existingNote = this.notes.find(note => note.id === noteData.id);
-    if (existingNote) {
-      this.updateNote(noteData);
-    } else {
-      this.notes = [noteData, ...this.notes];
-      localStorage.setItem('notes', JSON.stringify(this.notes));
-      this.render();
-    }
-  }
-
-  updateNote(noteData) {
-    this.notes = this.notes.map(note => 
-      note.id === noteData.id ? { ...note, ...noteData } : note
-    );
-    localStorage.setItem('notes', JSON.stringify(this.notes));
-    this.render();
-  }
-
-  deleteNote(noteId) {
-    this.notes = this.notes.filter(note => note.id !== noteId);
-    localStorage.setItem('notes', JSON.stringify(this.notes));
-    this.render();
-  }
-
   render() {
     this.innerHTML = '';
-    const filteredNotes = this.notes.filter(note => 
-      this.activeTab === 'notes' ? !note.archived : note.archived
+    const filteredNotes = this.notes.filter((note) =>
+      this.activeTab === 'notes' ? !note.archived : note.archived,
     );
 
     this.innerHTML = `
       <div class="note-wrapper">
-        ${filteredNotes.length > 0 
-          ? filteredNotes.map(note => `
-            <note-item 
+        ${
+          filteredNotes.length > 0
+            ? filteredNotes
+                .map(
+                  (note) => `
+            <note-item
               note-id="${note.id}" 
               note-title="${note.title}" 
-              note-body="${note.body}" 
-              note-archived="${note.archived}">
-            </note-item>`).join('')
-          : '<div class="empty-message">Tidak ada catatan.</div>'}
+              note-body="${note.body}">
+            </note-item>`,
+                )
+                .join('')
+            : '<div class="empty-message">Tidak ada catatan.</div>'
+        }
       </div>
     `;
+
+    const noteItems = this.querySelectorAll('note-item');
+
+    if (noteItems.length > 0) {
+      gsap.set(noteItems, { y: -20, opacity: 0 });
+      gsap.to(noteItems, {
+        y: 0,
+        opacity: 1,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'power2.out',
+      });
+    }
   }
 }
 
